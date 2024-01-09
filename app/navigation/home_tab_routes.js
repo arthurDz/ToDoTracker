@@ -3,11 +3,12 @@ import HomeScreen from '../screens/HomeScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CalenderScreen from '../screens/CalenderScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import {useState} from 'react';
+import {memo, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import colors from 'tailwindcss/colors';
 import Colors from '../utils/Colors';
 import {MotiView} from 'moti';
+import {ModalPortal} from 'react-native-modals';
 
 const HomeTabRoutes = () => {
   const Tab = createBottomTabNavigator();
@@ -50,7 +51,7 @@ const HomeTabRoutes = () => {
     );
   };
 
-  const MyTabBar = ({state, descriptors, navigation}) => {
+  const MyTabBar = memo(({state, descriptors, navigation}) => {
     const [selectedTab, setSelectedTab] = useState(null);
 
     const handleTabPress = (index, route) => {
@@ -64,6 +65,7 @@ const HomeTabRoutes = () => {
           const {options} = descriptors[route.key];
           const isFocused = state.index === index;
           const showText = isFocused || selectedTab === index;
+          console.log(route);
 
           return (
             <TouchableOpacity
@@ -107,31 +109,34 @@ const HomeTabRoutes = () => {
         })}
       </View>
     );
-  };
+  });
   return (
-    <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="Calender"
-        component={CalenderScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Calender"
+          component={CalenderScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Tab.Navigator>
+      <ModalPortal />
+    </>
   );
 };
 

@@ -1,14 +1,13 @@
 import {
   Image,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import AuthTemplate from './AuthTemplate';
 import Logo from '../../../assets/images/logo.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -20,13 +19,10 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import ENVIRONMENT from '../../utils/Environment';
 import Toast from 'react-native-toast-message';
-import {
-  getValueFromAsyncStorage,
-  setValueInAsyncStorage,
-} from '../../utils/AsyncStorageHelper';
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const [user, setUser] = useState({
+    name: '',
     email: '',
     password: '',
   });
@@ -35,6 +31,9 @@ const LoginScreen = () => {
 
   const handleInputField = (type, value) => {
     switch (type) {
+      case 'name':
+        setUser({...user, [type]: value});
+        break;
       case 'email':
         setUser({...user, [type]: value});
         break;
@@ -46,34 +45,39 @@ const LoginScreen = () => {
     }
   };
 
-  const handleLogin = () => {
+  const handleRegister = async () => {
     const headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     };
+    const data = {
+      name: user?.name,
+      email: user?.email,
+      password: user?.password,
+    };
     axios
-      .post(ENVIRONMENT.BASE_URL + 'auth/login', user, {
+      .post(ENVIRONMENT.BASE_URL + 'auth/register', data, {
         headers: headers,
       })
       .then(res => {
-        const {token, user} = res.data;
-        setValueInAsyncStorage('TOKEN', token);
+        console.log(res);
         Toast.show({
           type: 'success',
-          text1: 'Login successful',
-          text2: `💥Welcome Back, ${user?.name}!💥`,
+          text1: 'Registeration successful',
+          text2: '💥You have been registered successfully!💥',
         });
         setUser({
+          name: '',
           email: '',
           password: '',
         });
-        navigation.reset({index: 0, routes: [{name: 'Tabs'}]});
+        navigation.navigate('Login');
       })
       .catch(err => {
         Toast.show({
           type: 'error',
-          text1: 'Login failed',
-          text2: 'An error has ocurred while Logging in',
+          text1: 'Registeration failed',
+          text2: 'An error has ocurred while Registeration',
         });
         console.log('Error', err);
       });
@@ -81,14 +85,24 @@ const LoginScreen = () => {
   return (
     <AuthTemplate>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <KeyboardAvoidingView className="flex-1" behavior="padding">
+        <KeyboardAvoidingView className="flex-1" behavior="position">
           <Image source={Logo} style={styles.logo} />
           <Text className="text-4xl text-black font-bold self-center">
             TodoTracker
           </Text>
           <Text className="text-sm text-gray-500 self-center">
-            Welcome Back to your personal task tracker
+            Let's Get Started
           </Text>
+
+          <InputField
+            placeholder="Name"
+            value={user?.name}
+            onChangeText={val => handleInputField('name', val)}
+            leftIcon={
+              <AntDesign name="user" size={25} color={colors.gray[300]} />
+            }
+            inputClassName="shadow-2xl mt-[4vh] bg-white w-[90vw]"
+          />
 
           <InputField
             placeholder="Email"
@@ -121,19 +135,19 @@ const LoginScreen = () => {
             inputClassName="shadow-xl mt-[4vh] bg-white w-[90vw]"
           />
 
-          <Button btnClassName="mt-[4vh]" onPress={handleLogin}>
+          <Button btnClassName="mt-[4vh]" onPress={handleRegister}>
             <Text className="font-medium text-lg text-white uppercase">
-              Login
+              Register
             </Text>
           </Button>
 
           <View className="flex-row items-center self-center mt-2">
             <Text className="text-lg text-gray-400">
-              Don't have an account?
+              Already have an account?
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text className="text-lg text-blue-400 font-semibold ml-1">
-                Sign up
+                Login
               </Text>
             </TouchableOpacity>
           </View>
@@ -143,7 +157,7 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   logo: {

@@ -1,10 +1,11 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
+import AgendaScreen from '../components/CalendarScreen/AgendaScreen';
 
 const CalenderScreen = () => {
   return (
-    <View>
-      <Text>CalenderScreen</Text>
+    <View className="bg-[#101C2E] flex-1">
+      <AgendaScreen />
     </View>
   );
 };

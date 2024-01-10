@@ -65,7 +65,6 @@ const HomeTabRoutes = () => {
           const {options} = descriptors[route.key];
           const isFocused = state.index === index;
           const showText = isFocused || selectedTab === index;
-          console.log(route);
 
           return (
             <TouchableOpacity
@@ -150,9 +149,9 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: Colors['brand-washedBlue'],
     position: 'absolute',
-    bottom: 10,
-    right: 10,
-    left: 10,
+    bottom: 0,
+    right: 0,
+    left: 0,
     borderRadius: 10,
   },
   tab: {

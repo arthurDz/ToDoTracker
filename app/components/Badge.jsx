@@ -5,7 +5,7 @@ const Badge = ({label = '', labelClasses = '', badgeClasses = ''}) => {
   return (
     <View
       className={`rounded-xl py-[1] px-[10] justify-center items-center ${badgeClasses}`}>
-      <Text className={`text-sm text-white ${labelClasses}`}>{label}</Text>
+      <Text className={`text-xs text-white ${labelClasses}`}>{label}</Text>
     </View>
   );
 };

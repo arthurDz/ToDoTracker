@@ -5,6 +5,7 @@ import AuthRoutes from './auth_routes';
 import {getValueFromAsyncStorage} from '../utils/AsyncStorageHelper';
 import {Text} from 'react-native';
 import {useEffect, useState} from 'react';
+import TodoScreen from '../screens/TodoScreen';
 
 const AppRoutes = () => {
   const Stack = createNativeStackNavigator();
@@ -15,7 +16,6 @@ const AppRoutes = () => {
     const checkLoginStatus = async () => {
       try {
         const token = await getValueFromAsyncStorage('TOKEN');
-        console.log(token);
         if (token) {
           setIsLogin(true);
         }
@@ -40,6 +40,7 @@ const AppRoutes = () => {
         }}>
         <Stack.Screen name="Auth" component={AuthRoutes} />
         <Stack.Screen name="Tabs" component={HomeTabRoutes} />
+        <Stack.Screen name="TodoScreen" component={TodoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

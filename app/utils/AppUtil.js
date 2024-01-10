@@ -1,3 +1,4 @@
+import LottieView from 'lottie-react-native';
 import moment from 'moment';
 import tinycolor from 'tinycolor2';
 
@@ -27,5 +28,45 @@ export const formatTodoDueDate = dueDate => {
   const isSameDate = momentDueDate.isSame(momentCurrentDate, 'day');
 
   if (isSameDate) return moment(dueDate).format('h:mm A');
-  else return moment(dueDate).format('MMM Do YY, h:mm a');
+  else return moment(dueDate).format('MMM Do, h:mm A');
 };
+
+export const getGreeting = () => {
+  const currentTime = moment(); // Get the current time
+
+  const currentHour = currentTime.hour();
+
+  if (currentHour >= 6 && currentHour < 12) {
+    return 'Good Morning';
+  } else if (currentHour >= 12 && currentHour < 18) {
+    return 'Good Afternoon';
+  } else if (currentHour >= 18 && currentHour < 24) {
+    return 'Good Evening';
+  } else {
+    return 'Good Might';
+  }
+};
+
+export default function RefreshAnimation({style, name = 'refreshAnimation2'}) {
+  return (
+    <>
+      {name === 'loadingAnimation' ? (
+        <LottieView
+          source={require(`../../assets/animations/refreshAnimation.json`)}
+          autoPlay
+          loop
+          style={style}
+          resizeMode="cover"
+        />
+      ) : (
+        <LottieView
+          source={require(`../../assets/animations/refreshAnimation2.json`)}
+          autoPlay
+          loop
+          style={style}
+          resizeMode="cover"
+        />
+      )}
+    </>
+  );
+}

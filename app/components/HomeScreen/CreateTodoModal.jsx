@@ -44,7 +44,7 @@ const CreateTodoModal = ({
     setNewTodo({...newTodo, category: selectedCategory});
     try {
       const res = await axios.post(
-        ENVIRONMENT.BASE_URL + 'todo/addTodo',
+        ENVIRONMENT.BASE_URL + 'todos/addTodo',
         newTodo,
         {
           headers: {
@@ -54,12 +54,24 @@ const CreateTodoModal = ({
           },
         },
       );
+      setNewTodo({
+        title: '',
+        category: '',
+        dueDate: new Date(),
+        description: '',
+      });
+      setSelectedCategory('');
+      setAddTodoModalVisible(false);
       Toast.show({
         type: 'success',
         text1: 'Todo added successfully',
       });
       setAddedTodo(res?.data?.todo);
     } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'OOps!! Please try again',
+      });
       console.log(error);
     }
   };
@@ -79,8 +91,6 @@ const CreateTodoModal = ({
     });
     return colors;
   }, [categories]);
-
-  console.log(newTodo);
 
   const memoizedCategories = useMemo(
     () =>
@@ -241,7 +251,6 @@ const CreateTodoModal = ({
         onConfirm={date => {
           setShowDueDateModal(false);
           setNewTodo({...newTodo, dueDate: date});
-          console.log(new Date(date));
         }}
         onCancel={() => {
           setShowDueDateModal(false);

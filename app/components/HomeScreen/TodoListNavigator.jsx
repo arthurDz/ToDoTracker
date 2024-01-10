@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import React, {memo, useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {NavigationContainer, useRoute} from '@react-navigation/native';
@@ -7,10 +7,17 @@ import {getValueFromAsyncStorage} from '../../utils/AsyncStorageHelper';
 import ENVIRONMENT from '../../utils/Environment';
 import axios from 'axios';
 import TodoList from './TodoList';
+import colors from 'tailwindcss/colors';
 
-const TodoListNavigator = ({addedTodo}) => {
+const TodoListNavigator = ({addedTodo, setAddedTodo}) => {
   const Tab = createMaterialTopTabNavigator();
   const [todoList, setTodoList] = useState([]);
+  const [totalCount, setTotalCount] = useState({
+    all: 0,
+    open: 0,
+    completed: 0,
+    deleted: 0,
+  });
 
   const getTodos = async () => {
     const token = await getValueFromAsyncStorage('TOKEN');
@@ -23,7 +30,25 @@ const TodoListNavigator = ({addedTodo}) => {
         },
       });
       if (res?.data) {
+        let all = res?.data?.todos.filter(t => t.status !== 'deleted').length;
+        let open = res?.data?.todos.filter(t => t.status === 'open').length;
+        let completed = res?.data?.todos.filter(
+          t => t.status === 'completed',
+        ).length;
+        let deleted = res?.data?.todos.filter(
+          t => t.status === 'deleted',
+        ).length;
+
+        // let compPer = Math.round((Number(completed) / Number(all)) * 100);
         setTodoList(res?.data?.todos);
+        setTotalCount({
+          all: all,
+          open: open,
+          completed: completed,
+          deleted: deleted,
+        });
+        // setCompletedTaskPer(compPer);
+        setAddedTodo(null);
       }
     } catch (error) {
       console.log(error);
@@ -31,22 +56,14 @@ const TodoListNavigator = ({addedTodo}) => {
   };
 
   useEffect(() => {
-    console.log('addedTodo', addedTodo);
     getTodos();
   }, [addedTodo]);
-
-  const TotalCount = {
-    all: todoList.length,
-    open: todoList.filter(t => t.status === 'open').length,
-    closed: todoList.filter(t => t.status === 'closed').length,
-    deleted: todoList.filter(t => t.status === 'deleted').length,
-  };
 
   const MyTopTabBar = ({state, descriptors, navigation}) => {
     return (
       <View
         style={{flexDirection: 'row', justifyContent: 'space-between'}}
-        className="mx-5 pb-5">
+        className="mx-2 pb-5">
         {state.routes.map((route, index) => {
           const {options} = descriptors[route.key];
           const label =
@@ -93,16 +110,17 @@ const TodoListNavigator = ({addedTodo}) => {
                 className={`${
                   isFocused ? 'text-blue-500' : 'text-slate-50'
                 } capitalize mr-1`}
-                style={{fontSize: 16}}>
+                style={{fontSize: 14}}>
                 {label}
               </Text>
               <Badge
                 badgeClasses={`${
                   isFocused
-                    ? 'bg-blue-500'
+                    ? 'bg-white'
                     : 'bg-transparent border-2 border-white'
                 }`}
-                label={TotalCount[route.name]}
+                label={totalCount[route.name]}
+                labelClasses={isFocused ? 'text-black' : 'text-white'}
               />
             </TouchableOpacity>
           );
@@ -110,26 +128,69 @@ const TodoListNavigator = ({addedTodo}) => {
       </View>
     );
   };
+
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator
+        screenOptions={{
+          swipeEnabled: false,
+        }}
         tabBar={props => <MyTopTabBar {...props} />}
-        sceneContainerStyle={{backgroundColor: 'transparent'}}>
+        sceneContainerStyle={{
+          backgroundColor: colors.blue[900],
+          height: Dimensions.get('screen').height - 290,
+        }}>
         <Tab.Screen name="all">
-          {props => <TodoList {...props} data={todoList} status="all" />}
+          {props => (
+            <TodoList
+              {...props}
+              data={todoList}
+              status="all"
+              setAddedTodo={setAddedTodo}
+              setTodoList={setTodoList}
+              setTotalCount={setTotalCount}
+            />
+          )}
         </Tab.Screen>
         <Tab.Screen name="open">
-          {props => <TodoList {...props} data={todoList} status="open" />}
+          {props => (
+            <TodoList
+              {...props}
+              data={todoList}
+              status="open"
+              setAddedTodo={setAddedTodo}
+              setTodoList={setTodoList}
+              setTotalCount={setTotalCount}
+            />
+          )}
         </Tab.Screen>
-        <Tab.Screen name="closed">
-          {props => <TodoList {...props} data={todoList} status="closed" />}
+        <Tab.Screen name="completed">
+          {props => (
+            <TodoList
+              {...props}
+              data={todoList}
+              status="completed"
+              setAddedTodo={setAddedTodo}
+              setTodoList={setTodoList}
+              setTotalCount={setTotalCount}
+            />
+          )}
         </Tab.Screen>
         <Tab.Screen name="deleted">
-          {props => <TodoList {...props} data={todoList} status="deleted" />}
+          {props => (
+            <TodoList
+              {...props}
+              data={todoList}
+              status="deleted"
+              setAddedTodo={setAddedTodo}
+              setTodoList={setTodoList}
+              setTotalCount={setTotalCount}
+            />
+          )}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   );
 };
 
-export default memo(TodoListNavigator);
+export default TodoListNavigator;

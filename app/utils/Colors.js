@@ -57,6 +57,7 @@ const Colors = {
   'brand-primaryBlue': '#0469ff',
   'brand-primaryPurple': '#7000ff',
   'brand-dark': '#030014',
+  'brand-bg': '#101C2E',
 };
 
 export default Colors;

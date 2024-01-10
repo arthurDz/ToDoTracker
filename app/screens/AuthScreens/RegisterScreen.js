@@ -87,10 +87,10 @@ const RegisterScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <KeyboardAvoidingView className="flex-1" behavior="position">
           <Image source={Logo} style={styles.logo} />
-          <Text className="text-4xl text-black font-bold self-center">
+          <Text className="text-4xl text-blue-900 font-bold self-center">
             TodoTracker
           </Text>
-          <Text className="text-sm text-gray-500 self-center">
+          <Text className="text-sm text-blue-200 self-center">
             Let's Get Started
           </Text>
 
@@ -99,9 +99,9 @@ const RegisterScreen = () => {
             value={user?.name}
             onChangeText={val => handleInputField('name', val)}
             leftIcon={
-              <AntDesign name="user" size={25} color={colors.gray[300]} />
+              <AntDesign name="user" size={25} color={colors.blue[900]} />
             }
-            inputClassName="shadow-2xl mt-[4vh] bg-white w-[90vw]"
+            inputClassName="shadow-2xl mt-[4vh] bg-blue-400 w-[90vw]"
           />
 
           <InputField
@@ -109,9 +109,9 @@ const RegisterScreen = () => {
             value={user?.email}
             onChangeText={val => handleInputField('email', val)}
             leftIcon={
-              <AntDesign name="mail" size={25} color={colors.gray[300]} />
+              <AntDesign name="mail" size={25} color={colors.blue[900]} />
             }
-            inputClassName="shadow-2xl mt-[4vh] bg-white w-[90vw]"
+            inputClassName="shadow-2xl mt-[4vh] bg-blue-400 w-[90vw]"
           />
           <InputField
             placeholder="Password"
@@ -119,7 +119,7 @@ const RegisterScreen = () => {
             value={user?.password}
             onChangeText={val => handleInputField('password', val)}
             leftIcon={
-              <AntDesign name="lock1" size={25} color={colors.gray[300]} />
+              <AntDesign name="lock1" size={25} color={colors.blue[900]} />
             }
             rightComponent={
               <TouchableOpacity
@@ -128,21 +128,21 @@ const RegisterScreen = () => {
                 <Feather
                   name={hidden ? 'eye' : 'eye-off'}
                   size={25}
-                  color={colors.gray[300]}
+                  color={colors.blue[900]}
                 />
               </TouchableOpacity>
             }
-            inputClassName="shadow-xl mt-[4vh] bg-white w-[90vw]"
+            inputClassName="shadow-xl mt-[4vh] bg-blue-400 w-[90vw]"
           />
 
-          <Button btnClassName="mt-[4vh]" onPress={handleRegister}>
-            <Text className="font-medium text-lg text-white uppercase">
+          <Button btnClassName="mt-[4vh] bg-blue-900" onPress={handleRegister}>
+            <Text className="font-medium text-lg text-blue-400 uppercase">
               Register
             </Text>
           </Button>
 
-          <View className="flex-row items-center self-center mt-2">
-            <Text className="text-lg text-gray-400">
+          <View className="flex-row items-center self-center mt-5">
+            <Text className="text-lg text-blue-100">
               Already have an account?
             </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>

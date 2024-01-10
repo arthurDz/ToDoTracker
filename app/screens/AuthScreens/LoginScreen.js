@@ -83,10 +83,10 @@ const LoginScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <KeyboardAvoidingView className="flex-1" behavior="padding">
           <Image source={Logo} style={styles.logo} />
-          <Text className="text-4xl text-black font-bold self-center">
+          <Text className="text-4xl text-blue-900 font-bold self-center">
             TodoTracker
           </Text>
-          <Text className="text-sm text-gray-500 self-center">
+          <Text className="text-sm text-blue-200 self-center">
             Welcome Back to your personal task tracker
           </Text>
 
@@ -95,9 +95,9 @@ const LoginScreen = () => {
             value={user?.email}
             onChangeText={val => handleInputField('email', val)}
             leftIcon={
-              <AntDesign name="mail" size={25} color={colors.gray[300]} />
+              <AntDesign name="mail" size={25} color={colors.blue[900]} />
             }
-            inputClassName="shadow-2xl mt-[4vh] bg-white w-[90vw]"
+            inputClassName="shadow-2xl mt-[4vh] bg-blue-400 w-[90vw]"
           />
           <InputField
             placeholder="Password"
@@ -105,7 +105,7 @@ const LoginScreen = () => {
             value={user?.password}
             onChangeText={val => handleInputField('password', val)}
             leftIcon={
-              <AntDesign name="lock1" size={25} color={colors.gray[300]} />
+              <AntDesign name="lock1" size={25} color={colors.blue[900]} />
             }
             rightComponent={
               <TouchableOpacity
@@ -114,20 +114,20 @@ const LoginScreen = () => {
                 <Feather
                   name={hidden ? 'eye' : 'eye-off'}
                   size={25}
-                  color={colors.gray[300]}
+                  color={colors.blue[900]}
                 />
               </TouchableOpacity>
             }
-            inputClassName="shadow-xl mt-[4vh] bg-white w-[90vw]"
+            inputClassName="shadow-xl mt-[4vh] bg-blue-400 w-[90vw]"
           />
 
-          <Button btnClassName="mt-[4vh]" onPress={handleLogin}>
-            <Text className="font-medium text-lg text-white uppercase">
+          <Button btnClassName="mt-[4vh] bg-blue-900" onPress={handleLogin}>
+            <Text className="font-medium text-lg text-blue-400 uppercase">
               Login
             </Text>
           </Button>
 
-          <View className="flex-row items-center self-center mt-2">
+          <View className="flex-row items-center self-center mt-5">
             <Text className="text-lg text-gray-400">
               Don't have an account?
             </Text>

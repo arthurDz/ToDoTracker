@@ -14,12 +14,12 @@ const InputField = ({
   //   const inputClass = ;
   return (
     <View
-      className={`border border-gray-300 px-2 items-center my-2 text-gray-300 flex-row rounded-md ${inputClassName}`}>
+      className={`px-2 items-center my-2 text-gray-300 flex-row rounded-md ${inputClassName}`}>
       {leftIcon && <View>{leftIcon}</View>}
       <TextInput
         style={{flex: 1}}
         placeholder={placeholder}
-        placeholderTextColor={colors.gray[300]}
+        placeholderTextColor={colors.blue[900]}
         secureTextEntry={secureTextEntry}
         value={value}
         onChangeText={onChangeText}

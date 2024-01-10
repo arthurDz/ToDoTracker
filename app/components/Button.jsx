@@ -13,7 +13,7 @@ const Button = ({
       style={{...btnStyle}}
       activeOpacity={activeOpacity}
       onPress={onPress}
-      className={`w-full items-center justify-center bg-blue-500 rounded-lg shadow-xl shadow-blue-300 py-4 mt-5 ${btnClassName}`}>
+      className={`w-full items-center justify-center bg-blue-500 rounded-lg shadow-md shadow-blue-300 py-4 mt-5 ${btnClassName}`}>
       {children}
     </TouchableOpacity>
   );
